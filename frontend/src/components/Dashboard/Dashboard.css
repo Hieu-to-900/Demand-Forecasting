@@ -1,0 +1,124 @@
+.dashboard-section {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-section h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 0.5rem;
+}
+
+.metrics-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.chart-container {
+  margin-bottom: 2rem;
+}
+
+.chart-container h3 {
+  margin-bottom: 1rem;
+  color: #555;
+  font-size: 1.2rem;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.anomaly-list {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.anomaly-list h4 {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.anomaly-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.anomaly-list li {
+  padding: 0.25rem 0;
+  color: #666;
+}
+
+.alert-card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.alert-warning {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.alert-warning h3 {
+  color: #856404;
+  margin-bottom: 0.5rem;
+}
+
+.alert-warning p {
+  color: #856404;
+}
+
+.recommendations-section {
+  margin-top: 2rem;
+}
+
+.recommendations-section h3 {
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.recommendations-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.recommendations-list li {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: #f9f9f9;
+  border-left: 4px solid #667eea;
+  border-radius: 4px;
+  color: #333;
+}
+
