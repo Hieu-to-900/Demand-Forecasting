@@ -6,6 +6,13 @@ from typing import Any, Dict
 
 from langgraph.runtime import Runtime
 
+from agent.internal_data_mock import (
+    get_all_product_codes,
+    get_internal_data_for_product,
+    get_historical_sales_array,
+    get_inventory_level,
+    get_production_plans_array,
+)
 from agent.types_new import Context, State
 
 
@@ -24,8 +31,8 @@ async def split_product_batches(
     product_codes = state.product_codes or []
 
     if not product_codes:
-        # Mock product codes if none provided
-        product_codes = [f"PROD_{i:03d}" for i in range(1, 26)]  # 25 products
+        # Use mock product codes from internal_data_mock if none provided
+        product_codes = get_all_product_codes()  # Returns 5 products: INV-001 to INV-005
 
     # Split into 5 batches
     batch_size = len(product_codes) // 5
@@ -140,23 +147,84 @@ async def fuse_with_internal_data(
 
     Purpose: Combine public insight with local historical sales, inventory, and production plans.
     """
-    # Get internal data for product (mock for now)
-    internal_data = {
-        "historical_sales": [100, 120, 115, 130, 125],  # Last 5 periods
-        "inventory_levels": 500,
-        "production_plans": [150, 160, 155],
-        "product_code": product_code,
-    }
-
+    try:
+        # Get comprehensive internal data from mock database
+        product_data = get_internal_data_for_product(product_code)
+        
+        # Extract key metrics
+        historical_sales = get_historical_sales_array(product_code, periods=5)
+        inventory_info = product_data["inventory_levels"]
+        
+        internal_data = {
+            "product_code": product_code,
+            "product_name": product_data["product_name"],
+            "category": product_data["category"],
+            "subcategory": product_data["subcategory"],
+            "unit_price": product_data["unit_price"],
+            "product_lifecycle": product_data["product_lifecycle"],
+            "manufacturing_location": product_data["manufacturing_location"],
+            
+            # Historical sales (last 5 months)
+            "historical_sales": historical_sales,
+            "historical_sales_full": product_data["historical_sales"],  # All 36 months
+            
+            # Inventory
+            "inventory_levels": inventory_info["current_stock"],
+            "safety_stock": inventory_info["safety_stock"],
+            "reorder_point": inventory_info["reorder_point"],
+            "max_stock": inventory_info["max_stock"],
+            "stock_status": inventory_info["stock_status"],
+            "warehouse_location": inventory_info["warehouse_location"],
+            "lead_time_days": inventory_info["lead_time_days"],
+            
+            # Production plans
+            "production_plans": get_production_plans_array(product_code),
+            "production_plans_full": product_data["production_plans"],
+            
+            # Quality metrics
+            "quality_metrics": product_data["quality_metrics"],
+            
+            # Market segments and regions
+            "market_segments": product_data["market_segments"],
+            "regions": product_data["regions"],
+        }
+        
+        # Calculate historical trend
+        if len(historical_sales) >= 2:
+            recent_avg = sum(historical_sales[-3:]) / min(3, len(historical_sales))
+            older_avg = sum(historical_sales[:2]) / min(2, len(historical_sales))
+            if recent_avg > older_avg * 1.05:
+                historical_trend = "increasing"
+            elif recent_avg < older_avg * 0.95:
+                historical_trend = "decreasing"
+            else:
+                historical_trend = "stable"
+        else:
+            historical_trend = "stable"
+        
+    except ValueError:
+        # Fallback to simple mock data if product not found
+        internal_data = {
+            "product_code": product_code,
+            "product_name": f"Product {product_code}",
+            "historical_sales": [100, 120, 115, 130, 125],
+            "inventory_levels": 500,
+            "production_plans": [150, 160, 155],
+            "stock_status": "adequate",
+            "product_lifecycle": "unknown",
+        }
+        historical_trend = "stable"
+    
     # Fuse with market insight
     fused_data = {
         "product_code": product_code,
         "internal_data": internal_data,
         "market_insight": market_insight,
         "combined_features": {
-            "historical_trend": "increasing",
+            "historical_trend": historical_trend,
             "market_signal": market_insight.get("key_findings", []),
-            "inventory_status": "adequate" if internal_data["inventory_levels"] > 400 else "low",
+            "inventory_status": internal_data.get("stock_status", "unknown"),
+            "product_lifecycle": internal_data.get("product_lifecycle", "unknown"),
         },
     }
 

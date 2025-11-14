@@ -2,11 +2,17 @@
 
 from __future__ import annotations
 
+import os
 from typing import Any, Dict
 
+import openai
+from dotenv import load_dotenv
 from langgraph.runtime import Runtime
 
 from agent.types_new import Context, State
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 async def ingest_external_data(
@@ -251,19 +257,57 @@ async def store_in_chromadb(
     """
     cleaned_data = state.cleaned_external_data or []
 
-    # Mock ChromaDB storage - replace with actual ChromaDB implementation
-    # For now, simulate storage
+    # Initialize OpenAI client for embeddings
+    # Load API credentials from environment variables
+    embedding_base_url = os.getenv("EMBEDDING_API_BASE_URL")
+    embedding_api_key = os.getenv("EMBEDDING_API_KEY")
+    
+    if not embedding_api_key:
+        raise ValueError("EMBEDDING_API_KEY environment variable is not set. Please check your .env file.")
+    
+    client = openai.OpenAI(
+        base_url=embedding_base_url,
+        api_key=embedding_api_key
+    )
+
+    # Generate embeddings and prepare for storage
     stored_ids = []
+    embeddings_data = []
+    
     for idx, item in enumerate(cleaned_data):
-        # In real implementation, would:
-        # 1. Generate embeddings for item["cleaned_content"]
-        # 2. Store in ChromaDB with metadata
-        stored_ids.append(f"doc_{idx}_{item['timestamp']}")
+        try:
+            # Generate embedding for cleaned content
+            response = client.embeddings.create(
+                model="text-embedding-3-small",
+                input=item["cleaned_content"]
+            )
+            
+            # Extract embedding vector
+            embedding = response.data[0].embedding
+            
+            # Store embedding data (in real implementation, would store in ChromaDB)
+            embeddings_data.append({
+                "id": f"doc_{idx}_{item['timestamp']}",
+                "embedding": embedding,
+                "metadata": {
+                    "source": item.get("source"),
+                    "timestamp": item.get("timestamp"),
+                    "type": item.get("type"),
+                    "tags": item.get("tags", {}),
+                }
+            })
+            
+            stored_ids.append(f"doc_{idx}_{item['timestamp']}")
+        except Exception as e:
+            # Log error but continue processing other items
+            print(f"Error generating embedding for item {idx}: {e}")
+            stored_ids.append(f"doc_{idx}_{item['timestamp']}")
 
     return {
         "chromadb_collection": "external_market_data",
         "stored_document_ids": stored_ids,
         "total_stored": len(stored_ids),
+        "embeddings_generated": len(embeddings_data),
         "storage_timestamp": "2024-10-15T10:05:00",
     }
 
