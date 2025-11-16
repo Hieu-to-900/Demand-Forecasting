@@ -1,0 +1,514 @@
+/**
+ * Mock data generator for DENSO Demand Forecasting Dashboard
+ * Provides comprehensive test data for all dashboard components
+ */
+
+// Helper function to generate dates
+const generateDates = (days) => {
+  const dates = [];
+  const today = new Date();
+  for (let i = -30; i < days; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+    dates.push(date.toISOString().split('T')[0]);
+  }
+  return dates;
+};
+
+// Helper to generate random number
+const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+// ========== TIER 1: KPI Overview Data ==========
+export const mockKPIs = [
+  {
+    id: 'forecast_accuracy',
+    title: 'Độ chính xác dự báo',
+    icon: '📈',
+    value: 94.2,
+    change: 2.3,
+    trend: 'up',
+    status: 'excellent'
+  },
+  {
+    id: 'demand_change',
+    title: 'Biến động nhu cầu',
+    icon: '📊',
+    value: 12.5,
+    change: -3.2,
+    trend: 'up',
+    status: 'good'
+  },
+  {
+    id: 'risk_signals',
+    title: 'Tín hiệu rủi ro',
+    icon: '🚨',
+    value: 7,
+    change: 3,
+    trend: 'up',
+    status: 'warning'
+  },
+  {
+    id: 'inventory_cover',
+    title: 'Tồn kho dự phòng',
+    icon: '📦',
+    value: 28,
+    change: -2,
+    trend: 'down',
+    status: 'good'
+  },
+  {
+    id: 'stockout_risk',
+    title: 'Rủi ro hết hàng',
+    icon: '⚠️',
+    value: 'Medium',
+    riskScore: 45,
+    change: '+5 điểm',
+    trend: 'up',
+    status: 'warning'
+  },
+  {
+    id: 'production_load',
+    title: 'Tải công suất',
+    icon: '🏭',
+    value: 87,
+    change: 8,
+    trend: 'up',
+    status: 'warning'
+  }
+];
+
+// ========== TIER 2: Demand Forecasting Data ==========
+export const mockForecastData = {
+  // Time series data for main chart
+  timeSeries: generateDates(90).map((date, i) => {
+    const baseValue = 5000 + Math.sin(i / 10) * 1000;
+    const actual = i < 30 ? baseValue + random(-300, 300) : null;
+    const forecast = i >= 30 ? baseValue + random(-200, 200) : null;
+    
+    return {
+      date,
+      actual,
+      forecast,
+      upperBound: forecast ? forecast * 1.15 : null,
+      lowerBound: forecast ? forecast * 0.85 : null,
+      isHistorical: i < 30
+    };
+  }),
+  
+  // Products breakdown
+  productBreakdown: [
+    {
+      product_id: 'BUGI-IRIDIUM-VCH20',
+      name: 'Bugi Iridium Tough VCH20',
+      category: 'Spark Plugs',
+      forecast: 3200,
+      change: 12.3,
+      trend: 'up',
+      confidence: 95,
+      risk: 'Low'
+    },
+    {
+      product_id: 'BUGI-PLATIN-PK16TT',
+      name: 'Bugi Platin PK16TT',
+      category: 'Spark Plugs',
+      forecast: 2400,
+      change: 14.3,
+      trend: 'up',
+      confidence: 94,
+      risk: 'Low'
+    },
+    {
+      product_id: 'AC-COMPRESSOR-6SEU14C',
+      name: 'Máy Nén Điều Hòa 6SEU14C',
+      category: 'AC System',
+      forecast: 2100,
+      change: 16.7,
+      trend: 'up',
+      confidence: 92,
+      risk: 'Medium'
+    },
+    {
+      product_id: 'AC-EVAPORATOR-CORE',
+      name: 'Giàn Lạnh Evaporator',
+      category: 'AC System',
+      forecast: 1650,
+      change: 10.0,
+      trend: 'up',
+      confidence: 95,
+      risk: 'Low'
+    },
+    {
+      product_id: 'AC-CONDENSER-CORE',
+      name: 'Giàn Nóng Condenser',
+      category: 'AC System',
+      forecast: 1550,
+      change: 6.9,
+      trend: 'up',
+      confidence: 96,
+      risk: 'Low'
+    }
+  ],
+  
+  // Heatmap data (monthly demand by category)
+  heatmap: [
+    {
+      category: 'Spark Plugs',
+      values: [
+        { month: 'Jan', value: 4500, intensity: 0.6 },
+        { month: 'Feb', value: 4800, intensity: 0.65 },
+        { month: 'Mar', value: 5200, intensity: 0.75 },
+        { month: 'Apr', value: 5500, intensity: 0.85 },
+        { month: 'May', value: 5300, intensity: 0.8 },
+        { month: 'Jun', value: 5000, intensity: 0.7 }
+      ]
+    },
+    {
+      category: 'AC System',
+      values: [
+        { month: 'Jan', value: 3200, intensity: 0.4 },
+        { month: 'Feb', value: 3500, intensity: 0.5 },
+        { month: 'Mar', value: 4200, intensity: 0.7 },
+        { month: 'Apr', value: 5000, intensity: 0.9 },
+        { month: 'May', value: 5500, intensity: 1.0 },
+        { month: 'Jun', value: 5800, intensity: 1.0 }
+      ]
+    },
+    {
+      category: 'Filters',
+      values: [
+        { month: 'Jan', value: 2800, intensity: 0.5 },
+        { month: 'Feb', value: 2900, intensity: 0.55 },
+        { month: 'Mar', value: 3100, intensity: 0.6 },
+        { month: 'Apr', value: 3300, intensity: 0.65 },
+        { month: 'May', value: 3200, intensity: 0.6 },
+        { month: 'Jun', value: 3000, intensity: 0.55 }
+      ]
+    },
+    {
+      category: 'Sensors',
+      values: [
+        { month: 'Jan', value: 1900, intensity: 0.3 },
+        { month: 'Feb', value: 2000, intensity: 0.35 },
+        { month: 'Mar', value: 2200, intensity: 0.4 },
+        { month: 'Apr', value: 2400, intensity: 0.5 },
+        { month: 'May', value: 2300, intensity: 0.45 },
+        { month: 'Jun', value: 2100, intensity: 0.4 }
+      ]
+    }
+  ],
+  
+  // Model performance metrics
+  metrics: [
+    {
+      name: 'MAPE',
+      value: '5.8%',
+      description: 'Mean Absolute Percentage Error',
+      status: 'excellent'
+    },
+    {
+      name: 'RMSE',
+      value: '287',
+      description: 'Root Mean Squared Error',
+      status: 'good'
+    },
+    {
+      name: 'R²',
+      value: '0.94',
+      description: 'Coefficient of Determination',
+      status: 'excellent'
+    }
+  ]
+};
+
+// ========== TIER 3: Risk & News Intelligence ==========
+const mockNewsRisksList = [
+  {
+    id: 1,
+    title: 'Tắc nghẽn cảng Yokohama gây chậm trễ 48 giờ trong vận chuyển',
+    summary: 'Cảng Yokohama đang đối mặt với tình trạng quá tải nghiêm trọng, ảnh hưởng đến lịch trình sản xuất Q1/2025 cho bugi và linh kiện AC.',
+    source: 'Nikkei Asia',
+    date: '2025-01-15T08:30:00Z',
+    risk_score: 85,
+    category: 'supply_chain',
+    category_name: 'Chuỗi cung ứng',
+    tags: ['vận chuyển', 'chậm trễ', 'nhật bản'],
+    impact: 'negative',
+    affected_products: ['BUGI-IRIDIUM-VCH20', 'BUGI-PLATIN-PK16TT']
+  },
+  {
+    id: 2,
+    title: 'Giá thép tăng vọt 15% do Trung Quốc cắt giảm sản xuất',
+    summary: 'Các nhà máy thép Trung Quốc giảm công suất sản xuất, dẫn đến giá thép toàn cầu tăng mạnh, ảnh hưởng đến chi phí sản xuất máy nén điều hòa.',
+    source: 'Reuters',
+    date: '2025-01-14T10:15:00Z',
+    risk_score: 72,
+    category: 'supply_chain',
+    category_name: 'Chuỗi cung ứng',
+    tags: ['thép', 'giá cả', 'trung quốc'],
+    impact: 'negative',
+    affected_products: ['AC-COMPRESSOR-6SEU14C']
+  },
+  {
+    id: 3,
+    title: 'Thị trường ô tô Việt Nam tăng trưởng 18% so với cùng kỳ',
+    summary: 'Doanh số bán ô tô Q4/2024 tại Việt Nam đạt mức tăng trưởng ấn tượng, tạo triển vọng tích cực cho nhu cầu linh kiện thay thế.',
+    source: 'VnExpress',
+    date: '2025-01-13T14:20:00Z',
+    risk_score: 35,
+    category: 'market',
+    category_name: 'Thị trường',
+    tags: ['việt nam', 'tăng trưởng', 'ô tô'],
+    impact: 'positive',
+    affected_products: ['Tất cả sản phẩm']
+  },
+  {
+    id: 4,
+    title: 'Bão nhiệt đới tiến gần các trung tâm sản xuất Đông Nam Á',
+    summary: 'Cơn bão mạnh đang di chuyển về phía các khu công nghiệp tại Thái Lan, có thể gây gián đoạn chuỗi cung ứng linh kiện điều hòa.',
+    source: 'Weather Channel',
+    date: '2025-01-12T06:45:00Z',
+    risk_score: 68,
+    category: 'weather',
+    category_name: 'Thời tiết',
+    tags: ['bão', 'thời tiết', 'sản xuất'],
+    impact: 'negative',
+    affected_products: ['AC-EVAPORATOR-CORE', 'AC-CONDENSER-CORE']
+  },
+  {
+    id: 5,
+    title: 'Tỷ lệ sử dụng xe điện đạt 25% tại thị trường đô thị Việt Nam',
+    summary: 'Xu hướng chuyển đổi sang xe điện đang tăng nhanh ở các thành phố lớn, ảnh hưởng đến nhu cầu bugi nhưng duy trì ổn định cho hệ thống AC.',
+    source: 'Vietnam Automotive',
+    date: '2025-01-11T09:00:00Z',
+    risk_score: 55,
+    category: 'market',
+    category_name: 'Thị trường',
+    tags: ['xe điện', 'xu hướng', 'việt nam'],
+    impact: 'neutral',
+    affected_products: ['BUGI-IRIDIUM-VCH20', 'BUGI-PLATIN-PK16TT']
+  },
+  {
+    id: 6,
+    title: 'Đối thủ cạnh tranh công bố chiến dịch giảm giá 20%',
+    summary: 'Một thương hiệu cạnh tranh lớn vừa khởi động chương trình khuyến mãi mạnh tay, đe dọa thị phần của DENSO trong phân khúc bugi.',
+    source: 'Industry Weekly',
+    date: '2025-01-10T11:30:00Z',
+    risk_score: 78,
+    category: 'competition',
+    category_name: 'Cạnh tranh',
+    tags: ['đối thủ', 'giá cả', 'thị phần'],
+    impact: 'negative',
+    affected_products: ['BUGI-IRIDIUM-VCH20', 'BUGI-PLATIN-PK16TT']
+  },
+  {
+    id: 7,
+    title: 'Chính phủ gia hạn ưu đãi cho linh kiện ô tô xanh',
+    summary: 'Bộ Công Thương mở rộng chương trình hỗ trợ sản xuất linh kiện thân thiện môi trường, tạo cơ hội cho DENSO tiếp cận nguồn vốn ưu đãi.',
+    source: 'Bộ Công Thương',
+    date: '2025-01-09T15:00:00Z',
+    risk_score: 25,
+    category: 'policy',
+    category_name: 'Chính sách',
+    tags: ['chính phủ', 'ưu đãi', 'xanh'],
+    impact: 'positive',
+    affected_products: ['Tất cả sản phẩm']
+  }
+];
+
+// Wrap news risks with timeline and keywords
+export const mockNewsRisks = {
+  news: mockNewsRisksList,
+  timeline: generateDates(14).map((date, i) => ({
+    date: new Date(date).toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' }),
+    count: random(2, 8),
+    avg_risk: random(40, 80)
+  })),
+  keywords: [
+    { word: 'Cảng', frequency: 0.9 },
+    { word: 'Thép', frequency: 0.7 },
+    { word: 'EV/Điện', frequency: 0.6 },
+    { word: 'Bão/Thời tiết', frequency: 0.5 },
+    { word: 'Cạnh tranh', frequency: 0.8 },
+    { word: 'Tăng trưởng', frequency: 0.4 },
+    { word: 'Giá cả', frequency: 0.7 },
+    { word: 'Ưu đãi', frequency: 0.3 }
+  ]
+};
+
+// Risk timeline data
+export const mockRiskTimeline = generateDates(30).map((date, i) => ({
+  date,
+  riskCount: random(1, 5),
+  highSeverity: random(0, 2),
+  mediumSeverity: random(0, 2),
+  lowSeverity: random(0, 2),
+  avgSentiment: (Math.random() * 2 - 1).toFixed(2) // -1 to 1
+}));
+
+// Top risk keywords
+export const mockRiskKeywords = [
+  { word: 'delay', count: 12, trend: 'up' },
+  { word: 'price increase', count: 8, trend: 'up' },
+  { word: 'shortage', count: 6, trend: 'stable' },
+  { word: 'competition', count: 5, trend: 'up' },
+  { word: 'weather', count: 4, trend: 'down' },
+  { word: 'regulation', count: 3, trend: 'stable' },
+  { word: 'logistics', count: 7, trend: 'up' },
+  { word: 'market growth', count: 5, trend: 'stable' }
+];
+
+// ========== TIER 4: Action Recommendations ==========
+export const mockActionRecommendations = [
+  {
+    id: 1,
+    priority: 'high',
+    severity: 'critical',
+    title: 'Secure alternative shipping route to mitigate port congestion',
+    description: 'Yokohama port delays threaten Q1 production schedule. Recommend expediting shipments through alternative ports.',
+    estimatedImpact: 'Prevent $450K loss from production delays',
+    affectedProducts: ['BUGI-IRIDIUM-VCH20', 'BUGI-PLATIN-PK16TT'],
+    deadline: '2025-01-20',
+    status: 'pending',
+    actionItems: [
+      'Contact logistics partner for alternative routes',
+      'Negotiate expedited customs clearance',
+      'Update production schedule with 5-day buffer'
+    ]
+  },
+  {
+    id: 2,
+    priority: 'high',
+    severity: 'warning',
+    title: 'Increase production capacity by 15% to meet Q2 demand forecast',
+    description: 'Forecasted demand spike in Q2 exceeds current production capacity. Recommend adding overtime shifts or contracting third-party manufacturers.',
+    estimatedImpact: 'Capture additional $680K revenue from demand surge',
+    affectedProducts: ['AC-COMPRESSOR-6SEU14C', 'AC-EVAPORATOR-CORE'],
+    deadline: '2025-02-01',
+    status: 'in_progress',
+    actionItems: [
+      'Schedule overtime shifts for Lines A & B',
+      'Evaluate third-party manufacturing partners',
+      'Secure additional raw material inventory'
+    ]
+  },
+  {
+    id: 3,
+    priority: 'medium',
+    severity: 'warning',
+    title: 'Launch promotional campaign to counter competitor price reduction',
+    description: 'Competitor launched 20% price cut. Recommend targeted promotions and value-added services to retain market share.',
+    estimatedImpact: 'Prevent 8-12% market share erosion',
+    affectedProducts: ['BUGI-IRIDIUM-VCH20', 'BUGI-PLATIN-PK16TT'],
+    deadline: '2025-01-25',
+    status: 'pending',
+    actionItems: [
+      'Design 10-15% discount campaign for key distributors',
+      'Highlight premium quality and warranty benefits',
+      'Bundle spark plugs with maintenance services'
+    ]
+  },
+  {
+    id: 4,
+    priority: 'medium',
+    severity: 'info',
+    title: 'Hedge steel purchases to mitigate raw material cost surge',
+    description: 'Steel prices increased 15% and projected to rise further. Recommend forward contracts or bulk purchasing.',
+    estimatedImpact: 'Save $120K in Q2 material costs',
+    affectedProducts: ['AC-COMPRESSOR-6SEU14C'],
+    deadline: '2025-01-30',
+    status: 'pending',
+    actionItems: [
+      'Negotiate 6-month forward contract with steel supplier',
+      'Evaluate alternative materials if feasible',
+      'Lock in current pricing for Q2 needs'
+    ]
+  },
+  {
+    id: 5,
+    priority: 'low',
+    severity: 'info',
+    title: 'Optimize inventory distribution to reduce stockout risk',
+    description: 'Regional inventory analysis shows imbalances. Recommend redistributing stock to high-demand areas.',
+    estimatedImpact: 'Improve service level by 5-8%',
+    affectedProducts: ['all'],
+    deadline: '2025-02-10',
+    status: 'pending',
+    actionItems: [
+      'Transfer 500 units from Hanoi to Ho Chi Minh City',
+      'Increase safety stock in Da Nang warehouse',
+      'Implement demand-driven inventory allocation'
+    ]
+  },
+  {
+    id: 6,
+    priority: 'low',
+    severity: 'success',
+    title: 'Apply for government green manufacturing incentives',
+    description: 'New government program offers subsidies for eco-friendly production. Deadline approaching.',
+    estimatedImpact: 'Potential $200K subsidy for facility upgrades',
+    affectedProducts: ['all'],
+    deadline: '2025-02-15',
+    status: 'pending',
+    actionItems: [
+      'Prepare application documents',
+      'Document current environmental practices',
+      'Submit by February 5 deadline'
+    ]
+  }
+];
+
+// ========== Market Regions Data ==========
+export const mockRegions = [
+  {
+    id: 'hanoi',
+    name: 'Hanoi',
+    demandIndex: 1.2,
+    inventoryCover: 32,
+    riskLevel: 'low',
+    topProducts: ['BUGI-IRIDIUM-VCH20', 'AC-COMPRESSOR-6SEU14C']
+  },
+  {
+    id: 'hcmc',
+    name: 'Ho Chi Minh City',
+    demandIndex: 1.8,
+    inventoryCover: 18,
+    riskLevel: 'high',
+    topProducts: ['AC-COMPRESSOR-6SEU14C', 'AC-EVAPORATOR-CORE']
+  },
+  {
+    id: 'danang',
+    name: 'Da Nang',
+    demandIndex: 1.0,
+    inventoryCover: 28,
+    riskLevel: 'medium',
+    topProducts: ['BUGI-PLATIN-PK16TT', 'AC-CONDENSER-CORE']
+  },
+  {
+    id: 'haiphong',
+    name: 'Hai Phong',
+    demandIndex: 0.9,
+    inventoryCover: 35,
+    riskLevel: 'low',
+    topProducts: ['BUGI-IRIDIUM-VCH20', 'BUGI-PLATIN-PK16TT']
+  }
+];
+
+// ========== Product Categories ==========
+export const mockCategories = [
+  { id: 'spark_plugs', name: 'Spark Plugs', count: 2 },
+  { id: 'ac_system', name: 'AC System', count: 3 },
+  { id: 'filters', name: 'Filters', count: 4 },
+  { id: 'sensors', name: 'Sensors', count: 3 }
+];
+
+// Export all mock data
+export const mockData = {
+  kpis: mockKPIs,
+  forecast: mockForecastData,
+  newsRisks: mockNewsRisks,
+  actions: mockActionRecommendations,
+  regions: mockRegions,
+  categories: mockCategories
+};
+
+export default mockData;

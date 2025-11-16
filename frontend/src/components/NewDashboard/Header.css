@@ -1,0 +1,578 @@
+/* ========================================
+   PREMIUM SAAS HEADER - CALM UI DESIGN
+   Inspired by: Vercel, Linear, Stripe, Notion
+   ======================================== */
+
+.dashboard-header {
+  background: #ffffff;
+  border-bottom: 1px solid #eaeaea;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* ========================================
+   BRAND SECTION
+   ======================================== */
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 280px;
+}
+
+.logo-mark {
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0a0a0a;
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ========================================
+   FILTERS SECTION
+   ======================================== */
+
+.header-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.filter-item {
+  position: relative;
+}
+
+/* Minimal Select */
+.filter-select.minimal {
+  appearance: none;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 7px 32px 7px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #171717;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.filter-select.minimal:hover {
+  background: #f5f5f5;
+  border-color: #d4d4d4;
+}
+
+.filter-select.minimal:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+/* Filter Button */
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #171717;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.filter-button:hover {
+  background: #f5f5f5;
+  border-color: #d4d4d4;
+}
+
+.filter-button .chevron {
+  color: #666;
+  transition: transform 0.2s ease;
+}
+
+.filter-button:hover .chevron {
+  transform: translateY(1px);
+}
+
+.filter-label {
+  color: #171717;
+}
+
+/* Dropdown Panel */
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  min-width: 240px;
+  max-height: 360px;
+  overflow: hidden;
+  z-index: 1001;
+  animation: dropdownFadeIn 0.15s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0a0a0a;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.clear-button {
+  font-size: 12px;
+  font-weight: 500;
+  color: #3b82f6;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.clear-button:hover {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.dropdown-content {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.dropdown-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 4px;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4;
+}
+
+/* Checkbox Item */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  margin-bottom: 2px;
+}
+
+.checkbox-item:hover {
+  background: #fafafa;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #d4d4d4;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  accent-color: #3b82f6;
+}
+
+.checkbox-label {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: #171717;
+}
+
+.checkbox-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: #999;
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Search Container */
+.search-container {
+  position: relative;
+  flex: 1;
+  max-width: 280px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 7px 12px 7px 36px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #171717;
+  transition: all 0.15s ease;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.search-input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+/* ========================================
+   ACTIONS SECTION
+   ======================================== */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-button {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.15s ease;
+}
+
+.action-button:hover {
+  background: #fafafa;
+  color: #0a0a0a;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: #e5e5e5;
+  margin: 0 4px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.user-menu:hover {
+  background: #fafafa;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+/* ========================================
+   NOTIFICATION PANEL
+   ======================================== */
+
+.notification-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 32px;
+  width: 380px;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  animation: dropdownFadeIn 0.2s ease;
+  z-index: 1002;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.panel-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a0a0a;
+  margin: 0;
+}
+
+.panel-content {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f9f9f9;
+  transition: background 0.12s ease;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background: #fafafa;
+}
+
+.notification-item.unread {
+  background: #f8faff;
+}
+
+.notification-item.unread:hover {
+  background: #f0f5ff;
+}
+
+.notification-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.notification-dot.critical {
+  background: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.notification-dot.info {
+  background: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.notification-dot.success {
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.notification-body {
+  flex: 1;
+}
+
+.notification-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0a0a0a;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.notification-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+  margin: 0 0 6px 0;
+  line-height: 1.5;
+}
+
+.notification-time {
+  font-size: 11px;
+  font-weight: 500;
+  color: #999;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1200px) {
+  .header-container {
+    gap: 20px;
+  }
+
+  .header-filters {
+    gap: 8px;
+  }
+
+  .search-container {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 968px) {
+  .header-container {
+    height: auto;
+    flex-wrap: wrap;
+    padding: 16px 20px;
+  }
+
+  .header-brand {
+    min-width: auto;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+
+  .header-filters {
+    order: 3;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .search-container {
+    flex: 1;
+    max-width: none;
+    min-width: 200px;
+  }
+
+  .notification-panel {
+    right: 20px;
+    width: calc(100vw - 40px);
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-container {
+    padding: 12px 16px;
+  }
+
+  .brand-title {
+    font-size: 14px;
+  }
+
+  .filter-item {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .filter-button,
+  .filter-select.minimal {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .divider {
+    display: none;
+  }
+}
