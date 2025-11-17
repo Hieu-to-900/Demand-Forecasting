@@ -2,8 +2,26 @@ import React, { useState } from 'react';
 import './RiskIntelligence.css';
 import './LoadingStates.css';
 
-const RiskIntelligence = ({ newsRisks, loading, error }) => {
+const RiskIntelligence = ({ newsRisks, loading, error, onFilterChange }) => {
   const [selectedRisk, setSelectedRisk] = useState(null);
+  const [riskThreshold, setRiskThreshold] = useState(50);
+  const [daysLookback, setDaysLookback] = useState(30);
+
+  const handleRiskThresholdChange = (e) => {
+    const value = parseInt(e.target.value);
+    setRiskThreshold(value);
+    if (onFilterChange) {
+      onFilterChange({ riskThreshold: value, days: daysLookback });
+    }
+  };
+
+  const handleDaysChange = (e) => {
+    const value = parseInt(e.target.value);
+    setDaysLookback(value);
+    if (onFilterChange) {
+      onFilterChange({ riskThreshold, days: value });
+    }
+  };
 
   // Loading state
   if (loading) {
@@ -92,9 +110,49 @@ const RiskIntelligence = ({ newsRisks, loading, error }) => {
     <div className="risk-intelligence">
       <div className="risk-header">
         <h2>Giám sát rủi ro thông minh</h2>
+        <div className="risk-filters">
+          <div className="filter-group">
+            <label htmlFor="risk-threshold">
+              Mức rủi ro tối thiểu: <strong>{riskThreshold}</strong>
+            </label>
+            <input
+              id="risk-threshold"
+              type="range"
+              min="0"
+              max="100"
+              step="10"
+              value={riskThreshold}
+              onChange={handleRiskThresholdChange}
+              className="filter-slider"
+            />
+            <div className="filter-labels">
+              <span>0</span>
+              <span>50</span>
+              <span>100</span>
+            </div>
+          </div>
+          
+          <div className="filter-group">
+            <label htmlFor="days-lookback">
+              Khoảng thời gian: <strong>{daysLookback} ngày</strong>
+            </label>
+            <select
+              id="days-lookback"
+              value={daysLookback}
+              onChange={handleDaysChange}
+              className="filter-select"
+            >
+              <option value="7">7 ngày</option>
+              <option value="14">14 ngày</option>
+              <option value="30">30 ngày</option>
+              <option value="60">60 ngày</option>
+              <option value="90">90 ngày</option>
+            </select>
+          </div>
+        </div>
         <div className="risk-summary">
           <span className="risk-count">{newsRisks.news.length} tín hiệu rủi ro</span>
-          <span className="risk-trend">↑ +3 so với tuần trước</span>
+          <span className="risk-period">Trong {daysLookback} ngày qua</span>
         </div>
       </div>
 

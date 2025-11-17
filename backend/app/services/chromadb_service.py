@@ -68,7 +68,7 @@ class ChromaDBService:
         
         return self.collection
 
-    async def query_recent_news(
+    def query_recent_news(
         self,
         query_text: Optional[str] = None,
         n_results: int = 20,
@@ -127,6 +127,8 @@ class ChromaDBService:
             
         except Exception as e:
             print(f"❌ ChromaDB query failed: {str(e)}")
+            import traceback
+            traceback.print_exc()
             return []
 
     async def add_news_documents(
@@ -238,8 +240,8 @@ class ChromaDBService:
 # Global ChromaDB service instance
 chromadb_service = ChromaDBService(
     host=os.getenv("CHROMADB_HOST", "localhost"),
-    port=int(os.getenv("CHROMADB_PORT", "8000")),
-    collection_name=os.getenv("CHROMADB_COLLECTION", "external_market_data"),
+    port=int(os.getenv("CHROMADB_PORT", "8001")),
+    collection_name=os.getenv("CHROMADB_COLLECTION", "denso_market_intelligence"),
 )
 
 

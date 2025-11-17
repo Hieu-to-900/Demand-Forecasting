@@ -20,6 +20,11 @@ function NewDashboard() {
     searchQuery: ''
   });
 
+  const [riskFilters, setRiskFilters] = useState({
+    days: 30,
+    riskThreshold: 50
+  });
+
   // Fetch real data from backend APIs (Phase 1 Integration)
   const { 
     data: forecastData, 
@@ -46,10 +51,7 @@ function NewDashboard() {
     loading: riskLoading, 
     error: riskError,
     refetch: refetchRisks
-  } = useRiskNews({
-    days: 30,
-    riskThreshold: 50
-  });
+  } = useRiskNews(riskFilters);
 
   // Use mock data as fallback if API fails or data not loaded yet
   const forecast = forecastData || mockData.forecast;
@@ -81,6 +83,11 @@ function NewDashboard() {
     // TODO: Update action via API
     console.log('[NewDashboard] Action updated:', actionId, status);
     refetchActions();
+  };
+
+  const handleRiskFilterChange = (newFilters) => {
+    console.log('[NewDashboard] Risk filters changed:', newFilters);
+    setRiskFilters({ ...riskFilters, ...newFilters });
   };
 
   return (
@@ -118,6 +125,7 @@ function NewDashboard() {
             newsRisks={newsRisks}
             loading={riskLoading}
             error={riskError}
+            onFilterChange={handleRiskFilterChange}
           />
         </section>
 
